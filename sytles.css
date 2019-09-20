@@ -1,0 +1,43 @@
+.boxes {
+  width: 100px;
+  height: 100px;
+  display: inline-block;
+  text-align: center;
+}
+
+#row-two {
+  border-top: 5px solid black;
+  border-bottom: 5px solid black;
+  width: 350px;
+}
+
+#box-2 {
+  border-right: solid 5px black;
+  border-left: solid 5px black;
+}
+
+#box-5 {
+  border-right: solid 5px black;
+  border-left: solid 5px black;
+}
+
+#box-8 {
+  border-right: solid 5px black;
+  border-left: solid 5px black;
+}
+
+.red-box {
+  background: red;
+}
+
+#error-display {
+  width: 300px;
+  color: white;
+  background: red;
+}
+
+#winner-display {
+  width: 300px;
+  color: white;
+  background: green;
+}

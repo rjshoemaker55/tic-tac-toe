@@ -2,7 +2,28 @@ $('#error-display').hide();
 $('#winner-display').hide();
 $('#play-again').hide();
 
-const checkWin = () => {
+
+// Starts event listener
+const start = () => {
+  $(document.body).on('click', '.boxes', checkBoxUser);
+}
+
+
+// Checks if a square has already been taken, if not adds color and data-checked attribute
+const checkBoxUser = (e) => {
+  if ($(e.target).data('checked')) {
+    $('#error-display').show();
+    $('#error-display').text('That box is already taken!');
+    return;
+  } else {
+    $('#error-display').hide();
+    $(e.target).addClass('red-box').data('checked', true);
+    return checkWin();
+  };
+};
+
+// Checks if the user has 3 boxes in a row
+const checkWinUser = () => {
   let boxOneCheck = $('#box-1').data('checked');
   let boxTwoCheck = $('#box-2').data('checked');
   let boxThreeCheck = $('#box-3').data('checked');
@@ -12,17 +33,6 @@ const checkWin = () => {
   let boxSevenCheck = $('#box-7').data('checked');
   let boxEightCheck = $('#box-8').data('checked');
   let boxNineCheck = $('#box-9').data('checked');
-
-  console.clear();
-  console.log(`boxOneCheck: ${boxOneCheck}`)
-  console.log(`boxTwoCheck: ${boxTwoCheck}`)
-  console.log(`boxThreeCheck: ${boxThreeCheck}`)
-  console.log(`boxFourCheck: ${boxFourCheck}`)
-  console.log(`boxFiveCheck: ${boxFiveCheck}`)
-  console.log(`boxSixCheck: ${boxSixCheck}`)
-  console.log(`boxSevenCheck: ${boxSevenCheck}`)
-  console.log(`boxEightCheck: ${boxEightCheck}`)
-  console.log(`boxNineCheck: ${boxNineCheck}`)
 
   if (
   (boxOneCheck && boxTwoCheck && boxThreeCheck) ||
@@ -35,40 +45,29 @@ const checkWin = () => {
   (boxSevenCheck && boxEightCheck && boxNineCheck) 
   ) {
     return winGame();
-  }
-}
-
-const checkBox = (e) => {
-
-  if ($(e.target).data('checked')) {
-    $('#error-display').show();
-    $('#error-display').text('That box is already taken!');
-    return;
-  } else {
-    $('#error-display').hide();
-    $(e.target).addClass('red-box').data('checked', true);
-    return checkWin();
   };
 };
 
-$(document.body).on('click', '.boxes', checkBox);
 
+// Displays win banner and shows the play again button.
 const winGame = () => {
   $('#winner-display').show();
-  $(document.body).off('click', '.boxes', checkBox);
+  $(document.body).off('click', '.boxes', chechBoxUser);
   $('#play-again').show();
 };
 
+
+// Resets game board and turns on click listener back on
 $('#play-again').on('click', () => {
   for (i = 1; i < 10; i++) {
     $('#box-' + i).data('checked', false).removeClass('red-box');
-
     const boxData = $('#box-' + i).data('checked');
-    console.log(`Box ${i}: ${boxData}`)
   };
 
   $('#play-again').hide();
   $('#winner-display').hide();
-  $(document.body).on('click', '.boxes', checkBox);
+  $(document.body).on('click', '.boxes', checkBoxUser);
 });
+
+start();
 

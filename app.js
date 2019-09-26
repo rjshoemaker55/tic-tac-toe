@@ -1,4 +1,4 @@
-// Starts event listener
+// Starts event listener, sets box checked data to false, and hides errors/winner displays
 const start = () => {
   for (i = 1; i < 10; i++) {
     $('#box-' + i).data('checked', false).removeClass('red-box');
@@ -6,7 +6,7 @@ const start = () => {
   $('#play-again').hide();
   $('#winner-display').hide();
   $('#error-display').hide();
-  $(document.body).on('click', '.boxes', checkBoxUser);
+  pickBoxUser();
 };
 
 // Check which boxes are checked already and assign them variables
@@ -21,6 +21,10 @@ const boxCheck = () => ({
   boxEightCheck: $('#box-8').data('checked'),
   boxNineCheck: $('#box-9').data('checked')
 });
+
+const pickBoxUser = () => {
+  $(document.body).on('click', '.boxes', checkBoxUser);
+}
 
 // Checks if a square has already been taken, if not adds color and data-checked attribute
 const checkBoxUser = (e) => {
@@ -37,6 +41,7 @@ const checkBoxUser = (e) => {
 };
 
 const pickBoxComp = () => {
+  $(document.body).off('click', '.boxes', checkBoxUser);
   let boxOneRating = 0;
   let boxTwoRating = 0;
   let boxThreeRating = 0;
@@ -46,31 +51,34 @@ const pickBoxComp = () => {
   let boxSevenRating = 0;
   let boxEightRating = 0;
   let boxNineRating = 0;
+
+  let {
+    boxOneCheck,
+    boxTwoCheck,
+    boxThreeCheck,
+    boxFourCheck,
+    boxFiveCheck,
+    boxSixCheck,
+    boxSevenCheck,
+    boxEightCheck,
+    boxNineCheck
+  } = boxCheck();
+
+  const boxArray = [
+    boxOneCheck,
+    boxTwoCheck,
+    boxThreeCheck,
+    boxFourCheck,
+    boxFiveCheck,
+    boxSixCheck,
+    boxSevenCheck,
+    boxEightCheck,
+    boxNineCheck
+  ];
+  
+  console.log('computers turn')
+  pickBoxUser();
 };
-
-let {
-  boxOneCheck,
-  boxTwoCheck,
-  boxThreeCheck,
-  boxFourCheck,
-  boxFiveCheck,
-  boxSixCheck,
-  boxSevenCheck,
-  boxEightCheck,
-  boxNineCheck
-} = boxCheck();
-
-const boxArray = [
-  boxOneCheck,
-  boxTwoCheck,
-  boxThreeCheck,
-  boxFourCheck,
-  boxFiveCheck,
-  boxSixCheck,
-  boxSevenCheck,
-  boxEightCheck,
-  boxNineCheck
-];
 
 // const checkedBoxArray = boxArray.filter(box === )
 
@@ -99,7 +107,9 @@ const checkWinUser = () => {
   (boxSevenCheck && boxEightCheck && boxNineCheck) 
   ) {
     return winGame();
-  };
+  } else {
+    return pickBoxComp();
+  }
 };
 
 // Displays win banner and shows the play again button.
